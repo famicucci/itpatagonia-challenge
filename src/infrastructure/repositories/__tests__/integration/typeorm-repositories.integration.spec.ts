@@ -31,7 +31,11 @@ describe('TypeORM Repositories Integration Tests', () => {
           synchronize: true,
           logging: false,
         }),
-        TypeOrmModule.forFeature([CompanyEntity, TransferEntity, AdhesionEntity]),
+        TypeOrmModule.forFeature([
+          CompanyEntity,
+          TransferEntity,
+          AdhesionEntity,
+        ]),
       ],
       providers: [
         TypeOrmCompanyRepository,
@@ -40,13 +44,25 @@ describe('TypeORM Repositories Integration Tests', () => {
       ],
     }).compile();
 
-    companyRepo = module.get<TypeOrmCompanyRepository>(TypeOrmCompanyRepository);
-    transferRepo = module.get<TypeOrmTransferRepository>(TypeOrmTransferRepository);
-    adhesionRepo = module.get<TypeOrmAdhesionRepository>(TypeOrmAdhesionRepository);
-    
-    companyEntityRepo = module.get<Repository<CompanyEntity>>(getRepositoryToken(CompanyEntity));
-    transferEntityRepo = module.get<Repository<TransferEntity>>(getRepositoryToken(TransferEntity));
-    adhesionEntityRepo = module.get<Repository<AdhesionEntity>>(getRepositoryToken(AdhesionEntity));
+    companyRepo = module.get<TypeOrmCompanyRepository>(
+      TypeOrmCompanyRepository,
+    );
+    transferRepo = module.get<TypeOrmTransferRepository>(
+      TypeOrmTransferRepository,
+    );
+    adhesionRepo = module.get<TypeOrmAdhesionRepository>(
+      TypeOrmAdhesionRepository,
+    );
+
+    companyEntityRepo = module.get<Repository<CompanyEntity>>(
+      getRepositoryToken(CompanyEntity),
+    );
+    transferEntityRepo = module.get<Repository<TransferEntity>>(
+      getRepositoryToken(TransferEntity),
+    );
+    adhesionEntityRepo = module.get<Repository<AdhesionEntity>>(
+      getRepositoryToken(AdhesionEntity),
+    );
   });
 
   afterAll(async () => {
@@ -69,7 +85,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'test@pyme.com',
         10,
         2000000,
-        new Date('2024-01-01')
+        new Date('2024-01-01'),
       );
 
       const savedCompany = await companyRepo.save(company);
@@ -91,7 +107,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'Technology',
         true,
         'TESTC',
-        new Date('2024-01-01')
+        new Date('2024-01-01'),
       );
 
       const savedCompany = await companyRepo.save(company);
@@ -100,7 +116,9 @@ describe('TypeORM Repositories Integration Tests', () => {
       const retrievedCompany = await companyRepo.findById('test-corp-1');
       expect(retrievedCompany).not.toBeNull();
       expect(retrievedCompany).toBeInstanceOf(CompanyCorporativa);
-      expect((retrievedCompany as CompanyCorporativa).sector).toBe('Technology');
+      expect((retrievedCompany as CompanyCorporativa).sector).toBe(
+        'Technology',
+      );
     });
 
     it('should find company by CUIT and email', async () => {
@@ -111,7 +129,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'find@test.com',
         5,
         1000000,
-        new Date()
+        new Date(),
       );
       await companyRepo.save(company);
 
@@ -132,13 +150,13 @@ describe('TypeORM Repositories Integration Tests', () => {
         'original@test.com',
         8,
         1500000,
-        new Date()
+        new Date(),
       );
       await companyRepo.save(company);
 
-      const updated = await companyRepo.update('test-update-1', { 
+      const updated = await companyRepo.update('test-update-1', {
         name: 'Updated Name',
-        email: 'updated@test.com' 
+        email: 'updated@test.com',
       });
 
       expect(updated).not.toBeNull();
@@ -154,7 +172,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'delete@test.com',
         3,
         500000,
-        new Date()
+        new Date(),
       );
       await companyRepo.save(company);
 
@@ -177,7 +195,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'transfer@test.com',
         12,
         2500000,
-        new Date()
+        new Date(),
       );
       await companyRepo.save(testCompany);
     });
@@ -190,7 +208,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'ARS',
         '0001-0001-0001-12345678',
         'Test transfer',
-        new Date('2025-09-15')
+        new Date('2025-09-15'),
       );
 
       const savedTransfer = await transferRepo.save(transfer);
@@ -204,22 +222,55 @@ describe('TypeORM Repositories Integration Tests', () => {
 
     it('should find transfers by company ID', async () => {
       const transfers = [
-        new Transfer('t1', 'transfer-company-1', 100000, 'ARS', '1111-1111-1111-11111111', 'Transfer 1', new Date()),
-        new Transfer('t2', 'transfer-company-1', 200000, 'USD', '2222-2222-2222-22222222', 'Transfer 2', new Date()),
+        new Transfer(
+          't1',
+          'transfer-company-1',
+          100000,
+          'ARS',
+          '1111-1111-1111-11111111',
+          'Transfer 1',
+          new Date(),
+        ),
+        new Transfer(
+          't2',
+          'transfer-company-1',
+          200000,
+          'USD',
+          '2222-2222-2222-22222222',
+          'Transfer 2',
+          new Date(),
+        ),
       ];
 
       for (const transfer of transfers) {
         await transferRepo.save(transfer);
       }
 
-      const companyTransfers = await transferRepo.findByCompanyId('transfer-company-1');
+      const companyTransfers =
+        await transferRepo.findByCompanyId('transfer-company-1');
       expect(companyTransfers).toHaveLength(2);
     });
 
     it('should find transfers by date range', async () => {
       const transfers = [
-        new Transfer('td1', 'transfer-company-1', 100000, 'ARS', '1111-1111-1111-11111111', 'Sept transfer', new Date('2025-09-15')),
-        new Transfer('td2', 'transfer-company-1', 200000, 'ARS', '2222-2222-2222-22222222', 'Oct transfer', new Date('2025-10-15')),
+        new Transfer(
+          'td1',
+          'transfer-company-1',
+          100000,
+          'ARS',
+          '1111-1111-1111-11111111',
+          'Sept transfer',
+          new Date('2025-09-15'),
+        ),
+        new Transfer(
+          'td2',
+          'transfer-company-1',
+          200000,
+          'ARS',
+          '2222-2222-2222-22222222',
+          'Oct transfer',
+          new Date('2025-10-15'),
+        ),
       ];
 
       for (const transfer of transfers) {
@@ -228,7 +279,7 @@ describe('TypeORM Repositories Integration Tests', () => {
 
       const septTransfers = await transferRepo.findByDateRange(
         new Date('2025-09-01'),
-        new Date('2025-09-30')
+        new Date('2025-09-30'),
       );
 
       expect(septTransfers).toHaveLength(1);
@@ -243,13 +294,13 @@ describe('TypeORM Repositories Integration Tests', () => {
         'ARS',
         '3333-3333-3333-33333333',
         'Range test transfer',
-        new Date('2025-09-20')
+        new Date('2025-09-20'),
       );
       await transferRepo.save(transfer);
 
       const companyIds = await transferRepo.findCompaniesByTransferDateRange(
         new Date('2025-09-01'),
-        new Date('2025-09-30')
+        new Date('2025-09-30'),
       );
 
       expect(companyIds).toContain('transfer-company-1');
@@ -267,7 +318,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'adhesion@test.com',
         15,
         3000000,
-        new Date()
+        new Date(),
       );
       await companyRepo.save(testCompany);
     });
@@ -277,7 +328,7 @@ describe('TypeORM Repositories Integration Tests', () => {
         'adhesion-1',
         testCompany,
         new Date('2025-09-10'),
-        'APPROVED'
+        'APPROVED',
       );
 
       const savedAdhesion = await adhesionRepo.save(adhesion);
@@ -294,11 +345,12 @@ describe('TypeORM Repositories Integration Tests', () => {
         'adhesion-company-test',
         testCompany,
         new Date(),
-        'PENDING'
+        'PENDING',
       );
       await adhesionRepo.save(adhesion);
 
-      const companyAdhesions = await adhesionRepo.findByCompanyId('adhesion-company-1');
+      const companyAdhesions =
+        await adhesionRepo.findByCompanyId('adhesion-company-1');
       expect(companyAdhesions).toHaveLength(1);
       expect(companyAdhesions[0].status).toBe('PENDING');
     });
@@ -315,7 +367,7 @@ describe('TypeORM Repositories Integration Tests', () => {
 
       const septAdhesions = await adhesionRepo.findByDateRange(
         new Date('2025-09-01'),
-        new Date('2025-09-30')
+        new Date('2025-09-30'),
       );
 
       expect(septAdhesions).toHaveLength(1);
@@ -327,11 +379,14 @@ describe('TypeORM Repositories Integration Tests', () => {
         'adhesion-update-test',
         testCompany,
         new Date(),
-        'PENDING'
+        'PENDING',
       );
       await adhesionRepo.save(adhesion);
 
-      const updated = await adhesionRepo.update('adhesion-update-test', 'APPROVED');
+      const updated = await adhesionRepo.update(
+        'adhesion-update-test',
+        'APPROVED',
+      );
       expect(updated).not.toBeNull();
       expect(updated!.status).toBe('APPROVED');
     });
@@ -348,7 +403,7 @@ describe('TypeORM Repositories Integration Tests', () => {
 
       const companies = await adhesionRepo.findCompaniesByAdhesionDateRange(
         new Date('2025-09-01'),
-        new Date('2025-09-30')
+        new Date('2025-09-30'),
       );
 
       // Solo debería devolver empresas con adhesiones APPROVED
@@ -361,8 +416,25 @@ describe('TypeORM Repositories Integration Tests', () => {
     it('should handle full workflow: company -> transfers -> adhesions', async () => {
       // 1. Create companies
       const companies = [
-        new CompanyPyme('workflow-1', 'Workflow Company 1', '20-66666666-6', 'wf1@test.com', 10, 2000000, new Date()),
-        new CompanyCorporativa('workflow-2', 'Workflow Company 2', '30-77777777-7', 'wf2@test.com', 'Tech', true, 'WFC2', new Date()),
+        new CompanyPyme(
+          'workflow-1',
+          'Workflow Company 1',
+          '20-66666666-6',
+          'wf1@test.com',
+          10,
+          2000000,
+          new Date(),
+        ),
+        new CompanyCorporativa(
+          'workflow-2',
+          'Workflow Company 2',
+          '30-77777777-7',
+          'wf2@test.com',
+          'Tech',
+          true,
+          'WFC2',
+          new Date(),
+        ),
       ];
 
       for (const company of companies) {
@@ -371,8 +443,24 @@ describe('TypeORM Repositories Integration Tests', () => {
 
       // 2. Create transfers
       const transfers = [
-        new Transfer('wf-t1', 'workflow-1', 150000, 'ARS', '1111-1111-1111-11111111', 'WF Transfer 1', new Date('2025-09-15')),
-        new Transfer('wf-t2', 'workflow-2', 250000, 'USD', '2222-2222-2222-22222222', 'WF Transfer 2', new Date('2025-09-20')),
+        new Transfer(
+          'wf-t1',
+          'workflow-1',
+          150000,
+          'ARS',
+          '1111-1111-1111-11111111',
+          'WF Transfer 1',
+          new Date('2025-09-15'),
+        ),
+        new Transfer(
+          'wf-t2',
+          'workflow-2',
+          250000,
+          'USD',
+          '2222-2222-2222-22222222',
+          'WF Transfer 2',
+          new Date('2025-09-20'),
+        ),
       ];
 
       for (const transfer of transfers) {
@@ -395,20 +483,22 @@ describe('TypeORM Repositories Integration Tests', () => {
 
       const septTransfers = await transferRepo.findByDateRange(
         new Date('2025-09-01'),
-        new Date('2025-09-30')
+        new Date('2025-09-30'),
       );
       expect(septTransfers).toHaveLength(2);
 
-      const approvedCompanies = await adhesionRepo.findCompaniesByAdhesionDateRange(
-        new Date('2025-09-01'),
-        new Date('2025-09-30')
-      );
+      const approvedCompanies =
+        await adhesionRepo.findCompaniesByAdhesionDateRange(
+          new Date('2025-09-01'),
+          new Date('2025-09-30'),
+        );
       expect(approvedCompanies).toHaveLength(2);
 
-      const transferCompanyIds = await transferRepo.findCompaniesByTransferDateRange(
-        new Date('2025-09-01'),
-        new Date('2025-09-30')
-      );
+      const transferCompanyIds =
+        await transferRepo.findCompaniesByTransferDateRange(
+          new Date('2025-09-01'),
+          new Date('2025-09-30'),
+        );
       expect(transferCompanyIds).toContain('workflow-1');
       expect(transferCompanyIds).toContain('workflow-2');
     });
