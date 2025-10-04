@@ -1,11 +1,23 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+// Infrastructure - Database
+import { typeOrmConfig } from './infrastructure/database/typeorm.config';
+import { CompanyEntity } from './infrastructure/database/entities/company.entity';
+import { TransferEntity } from './infrastructure/database/entities/transfer.entity';
+import { AdhesionEntity } from './infrastructure/database/entities/adhesion.entity';
 
 // Infrastructure - Controllers
 import { CompanyController } from './infrastructure/controllers/company.controller';
 
-// Infrastructure - Repositories
+// Infrastructure - Repositories (Real TypeORM)
+import { TypeOrmCompanyRepository } from './infrastructure/repositories/typeorm-company.repository';
+import { TypeOrmTransferRepository } from './infrastructure/repositories/typeorm-transfer.repository';
+import { TypeOrmAdhesionRepository } from './infrastructure/repositories/typeorm-adhesion.repository';
+
+// Infrastructure - Repositories (Mock - for comparison)
 import { MockCompanyRepository } from './infrastructure/repositories/mock-company.repository';
 import { MockTransferRepository } from './infrastructure/repositories/mock-transfer.repository';
 import { MockAdhesionRepository } from './infrastructure/repositories/mock-adhesion.repository';
@@ -25,7 +37,12 @@ import {
 } from './domain/repositories/tokens';
 
 @Module({
-  imports: [],
+  imports: [
+    // Configure TypeORM with SQLite
+    TypeOrmModule.forRoot(typeOrmConfig),
+    // Register entities for injection
+    TypeOrmModule.forFeature([CompanyEntity, TransferEntity, AdhesionEntity]),
+  ],
   controllers: [
     AppController,
     CompanyController, // Nuevo controlador para el challenge
@@ -38,19 +55,29 @@ import {
     GetCompaniesAdheredLastMonthUseCase,
     RegisterCompanyAdhesionUseCase,
 
-    // Repository Implementations
+    // TypeORM Repository Implementations (REAL DATABASE)
     {
       provide: COMPANY_REPOSITORY_TOKEN,
-      useClass: MockCompanyRepository,
+      useClass: TypeOrmCompanyRepository,
     },
     {
       provide: TRANSFER_REPOSITORY_TOKEN,
-      useClass: MockTransferRepository,
+      useClass: TypeOrmTransferRepository,
     },
     {
       provide: ADHESION_REPOSITORY_TOKEN,
-      useClass: MockAdhesionRepository,
+      useClass: TypeOrmAdhesionRepository,
     },
+
+    // Additional providers for TypeORM repositories
+    TypeOrmCompanyRepository,
+    TypeOrmTransferRepository,
+    TypeOrmAdhesionRepository,
+
+    // Keep mock repositories available (for testing purposes)
+    MockCompanyRepository,
+    MockTransferRepository,
+    MockAdhesionRepository,
   ],
 })
 export class AppModule {}

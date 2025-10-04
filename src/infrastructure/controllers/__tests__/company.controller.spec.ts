@@ -55,12 +55,14 @@ describe('CompanyController', () => {
     }).compile();
 
     controller = module.get<CompanyController>(CompanyController);
-    getCompaniesWithTransfersUseCase = module.get<GetCompaniesWithTransfersLastMonthUseCase>(
-      GetCompaniesWithTransfersLastMonthUseCase,
-    ) as jest.Mocked<GetCompaniesWithTransfersLastMonthUseCase>;
-    getCompaniesAdheredUseCase = module.get<GetCompaniesAdheredLastMonthUseCase>(
-      GetCompaniesAdheredLastMonthUseCase,
-    ) as jest.Mocked<GetCompaniesAdheredLastMonthUseCase>;
+    getCompaniesWithTransfersUseCase =
+      module.get<GetCompaniesWithTransfersLastMonthUseCase>(
+        GetCompaniesWithTransfersLastMonthUseCase,
+      ) as jest.Mocked<GetCompaniesWithTransfersLastMonthUseCase>;
+    getCompaniesAdheredUseCase =
+      module.get<GetCompaniesAdheredLastMonthUseCase>(
+        GetCompaniesAdheredLastMonthUseCase,
+      ) as jest.Mocked<GetCompaniesAdheredLastMonthUseCase>;
     registerAdhesionUseCase = module.get<RegisterCompanyAdhesionUseCase>(
       RegisterCompanyAdhesionUseCase,
     ) as jest.Mocked<RegisterCompanyAdhesionUseCase>;
@@ -291,7 +293,10 @@ describe('CompanyController', () => {
           stockSymbol: 'NCORP',
         };
 
-        const corporativeAdhesion = new Adhesion('adhesion-2', testCompanyCorporativa);
+        const corporativeAdhesion = new Adhesion(
+          'adhesion-2',
+          testCompanyCorporativa,
+        );
         registerAdhesionUseCase.execute.mockResolvedValue(corporativeAdhesion);
 
         // Act
@@ -424,7 +429,8 @@ describe('CompanyController', () => {
           expect(exception.getResponse()).toEqual({
             success: false,
             message: 'Invalid company data',
-            error: 'Employee count is required and must be positive for PYME companies',
+            error:
+              'Employee count is required and must be positive for PYME companies',
           });
         }
       });
@@ -448,7 +454,8 @@ describe('CompanyController', () => {
           expect(exception.getResponse()).toEqual({
             success: false,
             message: 'Invalid company data',
-            error: 'Annual revenue is required and must be positive for PYME companies',
+            error:
+              'Annual revenue is required and must be positive for PYME companies',
           });
         }
       });
@@ -514,7 +521,9 @@ describe('CompanyController', () => {
           annualRevenue: 1000000,
         };
 
-        const error = new Error('Company with CUIT 20-98765432-1 already exists');
+        const error = new Error(
+          'Company with CUIT 20-98765432-1 already exists',
+        );
         registerAdhesionUseCase.execute.mockRejectedValue(error);
 
         // Act & Assert
@@ -542,7 +551,9 @@ describe('CompanyController', () => {
           annualRevenue: 1000000,
         };
 
-        const error = new Error('Company with email test@company.com already exists');
+        const error = new Error(
+          'Company with email test@company.com already exists',
+        );
         registerAdhesionUseCase.execute.mockRejectedValue(error);
 
         // Act & Assert
@@ -571,7 +582,9 @@ describe('CompanyController', () => {
           annualRevenue: 1000000,
         };
 
-        const error = new Error('Employee count and annual revenue are required for PYME companies');
+        const error = new Error(
+          'Employee count and annual revenue are required for PYME companies',
+        );
         registerAdhesionUseCase.execute.mockRejectedValue(error);
 
         // Act & Assert
@@ -582,7 +595,8 @@ describe('CompanyController', () => {
           expect(exception.getResponse()).toEqual({
             success: false,
             message: 'Invalid company data',
-            error: 'Employee count and annual revenue are required for PYME companies',
+            error:
+              'Employee count and annual revenue are required for PYME companies',
           });
         }
       });
