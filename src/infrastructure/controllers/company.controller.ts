@@ -96,7 +96,9 @@ export class CompanyController {
 
       if (
         error.message.includes('required') ||
-        error.message.includes('Invalid')
+        error.message.includes('Invalid') ||
+        error.message.includes('must be') ||
+        error.message.includes('positive')
       ) {
         throw new HttpException(
           {
