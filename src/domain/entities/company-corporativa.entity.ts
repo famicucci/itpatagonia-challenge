@@ -20,7 +20,10 @@ export class CompanyCorporativa extends Company {
       throw new Error('Corporate sector is required');
     }
 
-    if (this.stockSymbol && this.stockSymbol.trim().length === 0) {
+    if (
+      this.stockSymbol !== undefined &&
+      this.stockSymbol.trim().length === 0
+    ) {
       throw new Error('Stock symbol cannot be empty if provided');
     }
 
