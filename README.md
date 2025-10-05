@@ -26,6 +26,13 @@ npm run build
 npm run start:prod
 ```
 
+### Decisiones
+
+- **Porque arquitectura hexagonal**: Es flexible y escalable, separa responsabilidades, el domain queda separado de la infraestructura.
+- **Porque Nestjs**: trae varias soluciones ya preinstaladas y por lo tanto es sencillo iniciar el proyecto, ademas de brindar un marco mas claro que Express, donde hay que contruir todo desde cero. Ejemplo: testing. Utiliza inyeccion de dependencias por defecto, necesaria para mantener la abstracción entre las capas.
+- **Porque SQLite**: se prefiere en este caso una base de datos relacional, por la naturaleza del problema. Las transferencias pertenecen a las compañias al igual que las adhesiones, es parte del core de la aplicación. Se uso SQLite para velocidad en desarrollo.
+- **Porque Entidades separadas para PYME y Corporación**: Para dar un poco mas de versatilidad a la entidad Compañia se definieron distintas propiedades en cada tipo de compañia, para entender mas facilmente sus diferencias y facilitar validaciones se crearon en objetos diferentes que extienden de compañia.
+
 ### Capas de la Aplicación
 
 - **🎯 Domain**: Entidades y reglas de negocio
@@ -139,15 +146,4 @@ Content-Type: application/json
 ```bash
 # Ejecutar tests unitarios
 npm run test
-
-# Ejecutar tests end-to-end
-npm run test:e2e
-
-# Generar reporte de cobertura
-npm run test:cov
 ```
-
-## 👨‍💻 Autor
-
-**Francisco Micucci**  
-Challenge técnico para IT Patagonia
