@@ -33,6 +33,10 @@ npm run start:prod
 - **Porque SQLite**: se prefiere en este caso una base de datos relacional, por la naturaleza del problema. Las transferencias pertenecen a las compañias al igual que las adhesiones, es parte del core de la aplicación. Se uso SQLite para velocidad en desarrollo.
 - **Porque Entidades separadas para PYME y Corporación**: Para dar un poco mas de versatilidad a la entidad Compañia se definieron distintas propiedades en cada tipo de compañia, para entender mas facilmente sus diferencias y facilitar validaciones se crearon en objetos diferentes que extienden de compañia.
 
+### A mejorar
+
+- **Implementar migraciones**: colocar el synchronize en false
+
 ### Capas de la Aplicación
 
 - **🎯 Domain**: Entidades y reglas de negocio
