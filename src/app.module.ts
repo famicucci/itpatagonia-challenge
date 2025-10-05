@@ -17,11 +17,6 @@ import { TypeOrmCompanyRepository } from './infrastructure/repositories/typeorm-
 import { TypeOrmTransferRepository } from './infrastructure/repositories/typeorm-transfer.repository';
 import { TypeOrmAdhesionRepository } from './infrastructure/repositories/typeorm-adhesion.repository';
 
-// Infrastructure - Repositories (Mock - for comparison)
-import { MockCompanyRepository } from './infrastructure/repositories/mock-company.repository';
-import { MockTransferRepository } from './infrastructure/repositories/mock-transfer.repository';
-import { MockAdhesionRepository } from './infrastructure/repositories/mock-adhesion.repository';
-
 // Application - Use Cases
 import {
   GetCompaniesWithTransfersLastMonthUseCase,
@@ -73,11 +68,6 @@ import {
     TypeOrmCompanyRepository,
     TypeOrmTransferRepository,
     TypeOrmAdhesionRepository,
-
-    // Keep mock repositories available (for testing purposes)
-    MockCompanyRepository,
-    MockTransferRepository,
-    MockAdhesionRepository,
   ],
 })
 export class AppModule {}
