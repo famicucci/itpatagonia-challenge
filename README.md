@@ -4,33 +4,26 @@
 
 API desarrollada para el challenge técnico de IT Patagonia. Implementa un sistema de gestión de empresas con sus transferencias y adhesiones, construido con **NestJS** y **arquitectura hexagonal**.
 
-## 🏗️ Arquitectura
+## 📦 Instalación
 
-### Arquitectura Hexagonal (Ports & Adapters)
+```bash
+# Clonar repositorio
+git clone https://github.com/famicucci/itpatagonia-challenge.git
+cd itpatagonia-challenge
 
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run start:dev
 ```
-┌─────────────────────────────────────────────────┐
-│                Infrastructure                   │
-│  ┌─────────────────┐  ┌─────────────────────┐  │
-│  │   Controllers   │  │    Repositories     │  │
-│  │                 │  │      (Mock)         │  │
-│  └─────────────────┘  └─────────────────────┘  │
-└─────────────────┬───────────────┬───────────────┘
-                  │               │
-┌─────────────────▼───────────────▼───────────────┐
-│                Application                      │
-│  ┌─────────────────────────────────────────────┐ │
-│  │             Use Cases                       │ │
-│  └─────────────────────────────────────────────┘ │
-└─────────────────────────┬───────────────────────┘
-                          │
-┌─────────────────────────▼───────────────────────┐
-│                  Domain                         │
-│  ┌──────────────┐  ┌─────────────────────────┐  │
-│  │   Entities   │  │      Interfaces         │  │
-│  │              │  │    (Repositories)       │  │
-│  └──────────────┘  └─────────────────────────┘  │
-└─────────────────────────────────────────────────┘
+
+El servidor se ejecuta en `http://localhost:3000`.
+
+```bash
+# Ejecutar en modo producción
+npm run build
+npm run start:prod
 ```
 
 ### Capas de la Aplicación
@@ -51,46 +44,6 @@ API desarrollada para el challenge técnico de IT Patagonia. Implementa un siste
 
 3. **POST** `/companies/adhesions`
    - Registra la adhesión de una nueva empresa (PYME o Corporativa)
-
-## 🛠️ Tecnologías
-
-- **NestJS** - Framework principal
-- **TypeScript** - Lenguaje de programación
-- **Arquitectura Hexagonal** - Patrón arquitectónico
-
-## 📦 Instalación
-
-```bash
-# Clonar repositorio
-git clone <repository-url>
-cd itpatagonia-challenge
-
-# Instalar dependencias
-npm install
-
-# Ejecutar en modo desarrollo (con auto-reload)
-npm run start:dev
-
-# Ejecutar en modo producción
-npm run start:prod
-```
-
-## 🏃‍♂️ Ejecución
-
-### Modo Desarrollo
-
-```bash
-npm run start:dev
-```
-
-El servidor se ejecuta en `http://localhost:3000` con auto-reload activado.
-
-### Modo Producción
-
-```bash
-npm run build
-npm run start:prod
-```
 
 ## 📚 Uso de la API
 
@@ -181,21 +134,11 @@ Content-Type: application/json
 - Estados: PENDING, APPROVED, REJECTED
 - Historial completo de adhesiones
 
-### Ventajas de la Arquitectura
-
-✅ **Testeable**: Fácil mockear dependencias  
-✅ **Mantenible**: Separación clara de responsabilidades  
-✅ **Escalable**: Fácil agregar nuevas funcionalidades  
-✅ **Flexible**: Intercambiar implementaciones sin cambiar lógica
-
 ## 🧪 Testing
 
 ```bash
 # Ejecutar tests unitarios
 npm run test
-
-# Ejecutar tests en modo watch
-npm run test:watch
 
 # Ejecutar tests end-to-end
 npm run test:e2e
